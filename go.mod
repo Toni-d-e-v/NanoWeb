@@ -1,4 +1,4 @@
-module test
+module NanoWeb
 
 go 1.16
 
