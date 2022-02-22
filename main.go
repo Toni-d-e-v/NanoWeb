@@ -12,6 +12,19 @@ import (
 func path(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	path := ps.ByName("path")
 	path_local := "./" + path
+
+	// check that path does not goes to parent directory
+	// breake path and calculate where it goes to
+	// if it goes to parent directory, return error
+	// if it goes to child directory, return file
+
+	// look for ../
+	for i := 0; i < len(path); i++ {
+		if path[i] == '.' && path[i+1] == '.' && path[i+2] == '/' {
+			w.Write([]byte("404"))
+		}
+	}
+
 	if path == "/" {
 		if _, err := os.Stat("./index.html"); err == nil {
 			http.ServeFile(w, r, "index.html")
